@@ -26,19 +26,18 @@
 --
 --             ONLY fields between [] may be missing.
 --
-local addon, mano = ...
+-- local addon, mano = ...
 
 function __externaldbs()
    -- the new instance
    local self =   {
-                     index       =  -1,
+--                      index       =  -1,
                      id2zonename =  {},
                      zonename2id =  {},
                      puzzles     =  {},
                      cairns      =  {},
                   }
       -- public fields go in the instance table
-   }
 
    self.zonename2id  =  {  ["Meridian"]               =  'z6BA3E574E9564149',
                            ["Morban"]                 =  'z39095BA75AD7DC03',
@@ -170,32 +169,36 @@ function __externaldbs()
                      ["Steppes of Infinity"]=  {  label="Fevok Beleen",               category="Cairns",	y=0,	x=15592, z=7395 },
                   }
 
-   function self.filldbs()
-
-      for _, table in pairs({ self.cairns, self.puzzles}) do
-         for zonename, tbl in pairs(table) do
-            local noterecord     =  mano.mapnote.new( {  label       =  tbl.label,
-                                                         text        =  tbl.text,
-                                                         category    =  tbl.category,
-                                                         playerpos   =  {  coordX         =  tbl.x,
-                                                                           coordY         =  tbl.y or nil,
-                                                                           coordZ         =  tbl.z,
-                                                                           locationName   =  tbl.location or nil,
-                                                                           name           =  "forums",
-                                                                           radius         =  mano.default.radius,
-                                                                           zoneid         =  tbl.zoneid or  mano.db.zonename2id[zonename],
-                                                                           zonename       =  zonename,
-                                                                        },
-                                                         idx         =  self.index,
-                                                         timestamp   =  os.time(),
-                                                      }
-                                                   )
-            self.index  =  self.index - 1
-         end
-      end
-
-      return
-   end
+--    function self.filldbs()
+--
+--       local localdb  =  {}
+--
+--       for _, table in pairs({ self.cairns, self.puzzles}) do
+--          for zonename, tbl in pairs(table) do
+--             local noterecord     =  mano.mapnote.new( {  label       =  tbl.label,
+--                                                          text        =  tbl.text,
+--                                                          category    =  tbl.category,
+--                                                          playerpos   =  {  coordX         =  tbl.x,
+--                                                                            coordY         =  tbl.y or nil,
+--                                                                            coordZ         =  tbl.z,
+--                                                                            locationName   =  tbl.location or nil,
+--                                                                            name           =  "forums",
+--                                                                            radius         =  mano.default.radius,
+--                                                                            zoneid         =  tbl.zoneid or  mano.db.zonename2id[zonename],
+--                                                                            zonename       =  zonename,
+--                                                                         },
+--                                                          idx         =  self.index,
+--                                                          timestamp   =  os.time(),
+--                                                       }
+--                                                    )
+--             self.index  =  self.index - 1
+--
+--             table.insert(localdb, noterecord)
+--          end
+--       end
+--
+--       return
+--    end
 
    return self
 end

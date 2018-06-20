@@ -3,7 +3,7 @@
 -- Author      marcob@marcob.org
 -- StartDate   06/05/2018
 --
--- local addon, mano = ...
+local addon, mano = ...
 
 -- manonotesdb = {
 --    Meridian = {
@@ -32,10 +32,25 @@
 function __map_notes(basedb)
 
    local self =   {
-                  notes    =  {},
-                  extnotes =  {}
-                  lastidx  =  0,
+                  notes          =  {},
+                  extnotes       =  {},
+                  lastidx        =  0,
+                  lastnegativeidx=  0,
+                  extdbhandler   =  __externaldbs(),
+                  default        =  {  radius   =  0.5,  }
                   }
+
+   local function tablemerge(a, b)
+      if type(a) == 'table' and type(b) == 'table' then
+         for k,v in pairs(b) do
+            if type(v)=='table' and type(a[k] or false)=='table' then
+               merge(a[k],v) else a[k]=v
+            end
+         end
+      end
+
+      return a
+   end
 
    local function countarray(array)
 
@@ -49,6 +64,42 @@ function __map_notes(basedb)
 
       return count
    end
+
+   local function fillextdb()
+
+      local localdb  =  {}
+      local index    =  0
+
+      for _, table in pairs({ self.extdbhandler.cairns, self.extdbhandler.puzzles}) do
+         for zonename, tbl in pairs(table) do
+
+            index  =  index - 1
+
+            local noterecord     =  self.new( { label       =  tbl.label,
+                                                text        =  tbl.text,
+                                                category    =  tbl.category,
+                                                playerpos   =  {  coordX         =  tbl.x,
+                                                                  coordY         =  tbl.y or nil,
+                                                                  coordZ         =  tbl.z,
+                                                                  locationName   =  tbl.location or nil,
+                                                                  name           =  "forums",
+                                                                  radius         =  self.default.radius,
+                                                                  zoneid         =  tbl.zoneid or  self.extdbhandler.zonename2id[zonename],
+                                                                  zonename       =  zonename,
+                                                               },
+                                                idx         =  index,
+                                                timestamp   =  os.time()
+                                             }
+                                          )
+--             table.insert(localdb, noterecord)
+            print(string.format("fillextdb: index=(%s) label=(%s)", index, tbl.label))
+         end
+      end
+
+--       return   localdb
+      return
+   end
+
 
 
    local function loaddb(db)
@@ -69,9 +120,14 @@ function __map_notes(basedb)
 
 --                print("__map_notes.loaddb: dump(b):", mano.f.dumptable(b))
 
-               self.lastidx   =  math.max(self.lastidx, b.idx)
+               self.lastidx         =  math.max(self.lastidx, b.idx)
+               self.lastnegativeidx =  math.min(self.lastnegativeidx, b.idx)
             end
          end
+      end
+
+      if self.lastnegativeidx > -1	then
+         fillextdb()
       end
 
       return
@@ -117,6 +173,9 @@ function __map_notes(basedb)
          else
             print(string.format("self.getzonedata(%s) is == nil", zonename))
          end
+
+         if self.extnotes[zonename] ~= nil then
+         end
       end
 
       return t
@@ -138,7 +197,7 @@ function __map_notes(basedb)
    -- t = { label=, text=, category=, palyerpos={}, idx=n, timestamp }
    function self.new(newnote)
 
---       print("mapnote.new: ", mano.f.dumptable(newnote))
+      print("mapnote.new: ", mano.f.dumptable(newnote))
 
       local t  =  {}
 
