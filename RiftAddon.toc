@@ -1,0 +1,14 @@
+Identifier  =  "__mapnotes"
+Name        =  { English = "__mapnotes" }
+NameShort   =  "MaNo"
+Version     =  "0.1"
+Description =  { English = "__mapnotes" }
+Author      =  "marcob@marcob.org"
+Website     =  "https://github.com/cubeslinger/__mapnotes"
+Email       =  "marcob@marcob.org"
+Environment =  "4.0"
+
+RunOnStartup = {
+  "__mapnotes_db_puzzle_and_cairns.lua",
+  "__mapnotes.lua",
+}
