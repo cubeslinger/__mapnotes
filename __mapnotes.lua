@@ -197,46 +197,49 @@ function __map_notes(basedb)
    -- t = { label=, text=, category=, palyerpos={}, idx=n, timestamp }
    function self.new(newnote)
 
-      print("mapnote.new: ", mano.f.dumptable(newnote))
+--       print("mapnote.new:\n", mano.f.dumptable(newnote))
 
       local t  =  {}
 
-      if self.notes  == nil or not next(self.notes) then
-         loaddb()
-      end
+--       if self.notes  == nil or not next(self.notes) then
+--          loaddb()
+--       end
 
       if t ~= nil or next(t) ~= nil then
-         local label, text, category, playerpos, idx, timestamp   =  unpack(newnote)
+--          local label, text, category, playerpos, idx, timestamp   =  unpack(newnote)
+         print(string.format(" label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
 
 
-         if playerpos == nil or next(playerpos) == nil then
+         if newnote.playerpos == nil or next(newnote.playerpos) == nil then
             playerpos   =  getplayerposition()
+         else
+            playerpos   =  newnote.playerpos
          end
 
          if next(playerpos) then
 
-            if idx == nil then
+            if newnote.idx == nil then
                self.lastidx   =  self.lastidx   +  1
             end
 
-            if text ~= nil then
+            if newnote.label ~= nil or newnote.text ~=nil then
 
                if not self.notes[playerpos.zonename]  then
                   self.notes[playerpos.zonename]   =  {}
                end
 
-               t  =  {  idx         =  idx or self.lastidx,
-                        text        =  text or "Lorem Ipsum",
-                        category    =  category,
+               t  =  {  idx         =  newnote.idx or self.lastidx,
+                        text        =  newnote.text or "Lorem Ipsum",
+                        category    =  newnote.category,
                         playerpos   =  playerpos,
-                        timestamp   =  timestamp or os.time(),
+                        timestamp   =  newnote.timestamp or os.time(),
                      }
 
-               if idx   >  0  then
-                  table.insert(self.notes[playerposition.zonename], t)
-               else
-                  table.insert(self.extnotes[playerposition.zonename], t)
-               end
+--                if idx   >  0  then
+                  table.insert(self.notes[playerpos.zonename], t)
+--                else
+--                   table.insert(self.extnotes[playerposition.zonename], t)
+--                end
 
             end
 
