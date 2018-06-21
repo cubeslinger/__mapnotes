@@ -3,8 +3,6 @@
 -- Author      marcob@marcob.org
 -- StartDate   06/05/2018
 --
-local addon, mano = ...
-
 -- manonotesdb = {
 --    Meridian = {
 --                {
@@ -70,8 +68,12 @@ function __map_notes(basedb)
       local localdb  =  {}
       local index    =  0
 
-      for _, table in pairs({ self.extdbhandler.cairns, self.extdbhandler.puzzles}) do
-         for zonename, tbl in pairs(table) do
+--       for _, table in pairs({ self.extdbhandler.puzzles, self.extdbhandler.cairns }) do
+
+--          for zonename, tbl in pairs(table) do
+      for zonename, tbl in pairs(self.extdbhandler.puzzlesandcairns) do
+
+         print(string.format("fillextdb:\n zonename=%s\n tbl.idx=%s\n tbl.playerpos.zonename=%s\n tbl.label=%s", zonename, tbl.idx, tbl.location, tbl.label) )
 
             index  =  index - 1
 
@@ -92,11 +94,10 @@ function __map_notes(basedb)
                                              }
                                           )
 --             table.insert(localdb, noterecord)
-            print(string.format("fillextdb: index=(%s) label=(%s)", index, tbl.label))
+            print(string.format("fillextdb: index=(%s) label=(%s) zone=(%s)\n", index, noterecord.label, zonename))
          end
-      end
+--       end
 
---       return   localdb
       return
    end
 
@@ -115,7 +116,7 @@ function __map_notes(basedb)
       for _, tbl in pairs(self.notes) do
          for _, b in pairs(tbl) do
             if b.idx ~= nil then
-               print(string.format("__map_notes.loaddb: b=%s", b))
+               print(string.format("__map_notes.loaddb: zone=%s: (%s)", b.playerpos.zonename, b.label))
                print(string.format("__map_notes.loaddb: lastidx=%s, tbl.idx=%s", self.lastidx, b.idx))
 
 --                print("__map_notes.loaddb: dump(b):", mano.f.dumptable(b))
@@ -193,21 +194,13 @@ function __map_notes(basedb)
       return   t
    end
 
---    function self.new(notetext, notecategory)
    -- t = { label=, text=, category=, palyerpos={}, idx=n, timestamp }
    function self.new(newnote)
 
---       print("mapnote.new:\n", mano.f.dumptable(newnote))
-
       local t  =  {}
 
---       if self.notes  == nil or not next(self.notes) then
---          loaddb()
---       end
-
       if t ~= nil or next(t) ~= nil then
---          local label, text, category, playerpos, idx, timestamp   =  unpack(newnote)
-         print(string.format(" label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
+         print(string.format("-- PRE\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
 
 
          if newnote.playerpos == nil or next(newnote.playerpos) == nil then
@@ -229,17 +222,17 @@ function __map_notes(basedb)
                end
 
                t  =  {  idx         =  newnote.idx or self.lastidx,
-                        text        =  newnote.text or "Lorem Ipsum",
+                        label       =  newnote.label,
+                        text        =  newnote.text,
                         category    =  newnote.category,
                         playerpos   =  playerpos,
                         timestamp   =  newnote.timestamp or os.time(),
                      }
 
---                if idx   >  0  then
-                  table.insert(self.notes[playerpos.zonename], t)
---                else
---                   table.insert(self.extnotes[playerposition.zonename], t)
---                end
+               table.insert(self.notes[playerpos.zonename], t)
+
+               print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
+                                    t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
 
             end
 
