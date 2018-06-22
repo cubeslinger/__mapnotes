@@ -9,9 +9,9 @@
 --                   category = "default",
 --                   idx = 4,
 --                   playerpos = {
---                      coordX = 5988.4799804688,
---                      coordY = 912.72998046875,
---                      coordZ = 5258.6997070312,
+--                      x = 5988.4799804688,
+--                      y = 912.72998046875,
+--                      z = 5258.6997070312,
 --                      locationName = "The Manufactory",
 --                      name = "Bouncingblaze",
 --                      radius = 0.52499997615814,
@@ -25,24 +25,52 @@
 --              }
 --              }
 
-
+-- t  =  {  idx         =  newnote.idx or self.lastidx,
+--          label       =  newnote.label,
+--          text        =  newnote.text,
+--          category    =  newnote.category,
+--          playerpos   =  playerpos,
+--                         y              =  tbl.y or nil,
+--                         x              =  tbl.x,
+--                         z              =  tbl.z,
+--                         locationName   =  tbl.location or nil,
+--                         name           =  "forums",
+--                         radius         =  self.default.radius,
+--                         zoneid         =  tbl.zoneid or  self.extdbhandler.zonename2id[zonename],
+--                         zonename       =  zonename,
+--                         },
+--          timestamp   =  newnote.timestamp or os.time(),
+--       }
+--
+-- local addon, mano = ...
 --
 function __map_notes(basedb)
 
    local self =   {
                   notes          =  {},
-                  extnotes       =  {},
                   lastidx        =  0,
                   lastnegativeidx=  0,
-                  extdbhandler   =  __externaldbs(),
-                  default        =  {  radius   =  0.5,  }
+--                   extdbhandler   =  __externaldbs(),
+                  default        =  {  radius   =  0.5,  },
+                  db             =  {}
                   }
 
    local function tablemerge(a, b)
       if type(a) == 'table' and type(b) == 'table' then
          for k,v in pairs(b) do
-            if type(v)=='table' and type(a[k] or false)=='table' then
-               merge(a[k],v) else a[k]=v
+--             if type(v)=='table' and type(a[k] or false)=='table' then
+--                tablemerge(a[k],v) else a[k]=v
+--             end
+            if type(v)=='table' then
+               if type(a[k])  == 'table' then
+                  tablemerge(a[k],v)
+               else
+                  if a[k] == nil then
+                     a[k] = v
+                  else
+                     tables.insert(a[k], v)
+                  end
+               end
             end
          end
       end
@@ -63,43 +91,43 @@ function __map_notes(basedb)
       return count
    end
 
-   local function fillextdb()
-
-      local localdb  =  {}
-      local index    =  0
-
---       for _, table in pairs({ self.extdbhandler.puzzles, self.extdbhandler.cairns }) do
-
---          for zonename, tbl in pairs(table) do
-      for zonename, tbl in pairs(self.extdbhandler.puzzlesandcairns) do
-
-         print(string.format("fillextdb:\n zonename=%s\n tbl.idx=%s\n tbl.playerpos.zonename=%s\n tbl.label=%s", zonename, tbl.idx, tbl.location, tbl.label) )
-
-            index  =  index - 1
-
-            local noterecord     =  self.new( { label       =  tbl.label,
-                                                text        =  tbl.text,
-                                                category    =  tbl.category,
-                                                playerpos   =  {  coordX         =  tbl.x,
-                                                                  coordY         =  tbl.y or nil,
-                                                                  coordZ         =  tbl.z,
-                                                                  locationName   =  tbl.location or nil,
-                                                                  name           =  "forums",
-                                                                  radius         =  self.default.radius,
-                                                                  zoneid         =  tbl.zoneid or  self.extdbhandler.zonename2id[zonename],
-                                                                  zonename       =  zonename,
-                                                               },
-                                                idx         =  index,
-                                                timestamp   =  os.time()
-                                             }
-                                          )
---             table.insert(localdb, noterecord)
-            print(string.format("fillextdb: index=(%s) label=(%s) zone=(%s)\n", index, noterecord.label, zonename))
-         end
+--    local function fillextdb()
+--
+--       local localdb  =  {}
+--       local index    =  0
+--
+-- --       for _, table in pairs({ self.extdbhandler.puzzles, self.extdbhandler.cairns }) do
+--
+-- --          for zonename, tbl in pairs(table) do
+--       for zonename, tbl in pairs(self.extdbhandler.puzzlesandcairns) do
+--
+--          print(string.format("fillextdb:\n zonename=%s\n tbl.idx=%s\n tbl.playerpos.zonename=%s\n tbl.label=%s", zonename, tbl.idx, tbl.location, tbl.label) )
+--
+--             index  =  index - 1
+--
+--             local noterecord     =  self.new( { label       =  tbl.label,
+--                                                 text        =  tbl.text,
+--                                                 category    =  tbl.category,
+--                                                 playerpos   =  {  x              =  tbl.x,
+--                                                                   y              =  tbl.y or nil,
+--                                                                   z              =  tbl.z,
+--                                                                   locationName   =  tbl.location or nil,
+--                                                                   name           =  "forums",
+--                                                                   radius         =  self.default.radius,
+--                                                                   zoneid         =  tbl.zoneid or  self.extdbhandler.zonename2id[zonename],
+--                                                                   zonename       =  zonename,
+--                                                                },
+--                                                 idx         =  index,
+--                                                 timestamp   =  os.time()
+--                                              }
+--                                           )
+-- --             table.insert(localdb, noterecord)
+--             print(string.format("fillextdb: index=(%s) label=(%s) zone=(%s)\n", index, noterecord.label, zonename))
+--          end
 --       end
-
-      return
-   end
+--
+--       return
+--    end
 
 
 
@@ -127,9 +155,9 @@ function __map_notes(basedb)
          end
       end
 
-      if self.lastnegativeidx > -1	then
-         fillextdb()
-      end
+--       if self.lastnegativeidx > -1	then
+--          fillextdb()
+--       end
 
       return
    end
@@ -142,9 +170,9 @@ function __map_notes(basedb)
 
 
       if bool  then
-         t.coordX         = playerdata.coordX
-         t.coordY         = playerdata.coordY
-         t.coordZ         = playerdata.coordZ
+         t.x              = playerdata.x
+         t.y              = playerdata.y
+         t.z              = playerdata.z
          t.zone           = playerdata.zone
          t.locationName   = playerdata.locationName
          t.radius         = playerdata.radius
@@ -175,7 +203,21 @@ function __map_notes(basedb)
             print(string.format("self.getzonedata(%s) is == nil", zonename))
          end
 
-         if self.extnotes[zonename] ~= nil then
+
+         if self.db.puzzles.db[zonename] ~= nil and self.db.puzzles.db[zonename] ~= nil then
+--             print("self.db.puzzles.db[".. zonename .."]\n", mano.f.dumptable(self.db.puzzles.db[zonename]))
+
+            for dummy, tbl in ipairs(self.db.puzzles.db[zonename]) do
+               table.insert(t, tbl)
+            end
+--             print("self.db.puzzles.db[".. zonename .."]\n", mano.f.dumptable(t))
+         end
+
+         if self.db.cairns.db[zonename] ~= nil and self.db.cairns.db[zonename] ~= nil then
+            for dummy, tbl in ipairs(self.db.cairns.db[zonename]) do
+               table.insert(t, tbl)
+            end
+--             print("self.db.cairns.db[".. zonename .."]\n", mano.f.dumptable(t))
          end
       end
 
@@ -199,7 +241,7 @@ function __map_notes(basedb)
 
       local t  =  {}
 
-      if t ~= nil or next(t) ~= nil then
+      if newnote ~= nil or next(newnote) ~= nil then
          print(string.format("-- PRE\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
 
 
@@ -248,6 +290,8 @@ function __map_notes(basedb)
    end
 
    loaddb(basedb or nil)
+   self.db.puzzles   =  __puzzles()
+   self.db.cairns    =  __cairns()
 
    -- return the class instance
    return self

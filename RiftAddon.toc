@@ -9,6 +9,7 @@ Email       =  "marcob@marcob.org"
 Environment =  "4.0"
 
 RunOnStartup = {
-  "__mapnotes_db_puzzle_and_cairns.lua",
+  "db/__puzzles.lua",
+  "db/__cairns.lua",
   "__mapnotes.lua",
 }
