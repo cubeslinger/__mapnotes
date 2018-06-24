@@ -659,6 +659,7 @@ t  =  {  ["Freemarch"]        =  {  {  idx         =  nil,
          }
 
    self.db  =  t
+   t        =  {}
 
    return self
 end

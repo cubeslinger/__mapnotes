@@ -314,6 +314,7 @@ function __puzzles()
          }
 
    self.db  =  t
+   t        =  {}
 
    return self
 end
