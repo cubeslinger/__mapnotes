@@ -151,7 +151,7 @@ function __map_notes(basedb)
 
       local t  =  {}
 
-      print("self.getzonedata:", mano.f.dumptable(self.notes))
+--       print("self.getzonedata:", mano.f.dumptable(self.notes))
 
       if zonename ~= nil then
          
