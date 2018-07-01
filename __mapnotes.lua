@@ -4,27 +4,7 @@
 -- StartDate   06/05/2018
 --
 -- manonotesdb = {
---    Meridian = {
---                {
---                   category = "default",
---                   idx = 4,
---                   playerpos = {
---                      x = 5988.4799804688,
---                      y = 912.72998046875,
---                      z = 5258.6997070312,
---                      locationName = "The Manufactory",
---                      name = "Bouncingblaze",
---                      radius = 0.52499997615814,
---                      zone = "z6BA3E574E9564149",
---                      zoneid = "z6BA3E574E9564149",
---                      zonename = "Meridian"
---                   },
---                   text = "Pipap Normale",
---                   timestamp = 1529408609
---                }
---              }
---              }
-
+--
 -- t  =  {  idx         =  newnote.idx or self.lastidx,
 --          label       =  newnote.label,
 --          text        =  newnote.text,
@@ -44,7 +24,7 @@
 --
 local addon, mano = ...
 --
-function __map_notes(basedb)
+function __map_notes(basedb, customtbl)
 
    local self =   {
                   notes          =  {},
@@ -130,12 +110,14 @@ function __map_notes(basedb)
          t.x              = playerdata.coordX
          t.y              = playerdata.coordY
          t.z              = playerdata.coordZ
-         t.zone           = playerdata.zone
+--          t.zone           = playerdata.zone
          t.locationName   = playerdata.locationName
          t.radius         = playerdata.radius
          t.name           = playerdata.name
 
-         local bool, zonedata = pcall(Inspect.Zone.Detail, t.zone)
+--          local bool, zonedata = pcall(Inspect.Zone.Detail, t.zone)
+
+         local bool, zonedata = pcall(Inspect.Zone.Detail, playerdata.zone)
 
          t.zonename  =  (zonedata.name or nil)
          t.zoneid    =  (zonedata.id   or nil)
@@ -150,8 +132,6 @@ function __map_notes(basedb)
    function self.getzonedata(zonename)
 
       local t  =  {}
-
---       print("self.getzonedata:", mano.f.dumptable(self.notes))
 
       if zonename ~= nil then
          
@@ -175,6 +155,8 @@ function __map_notes(basedb)
       else
          print("self.getzonedata:zonename: zonename is nil!")
       end
+      
+--       print("getzonedata:\n", mano.f.dumptable(t))
 
       return t
    end
@@ -191,13 +173,13 @@ function __map_notes(basedb)
       return   t
    end
 
-   -- t = { label=, text=, category=, playerpos={}, idx=n, timestamp }
-   function self.new(newnote)
+   -- newnote = { label, text, category, playerpos={}, idx, timestamp }
+   function self.new(newnote, customtbl)
 
       local t  =  {}
 
       if newnote ~= nil or next(newnote) ~= nil then
-         print(string.format("-- PRE\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
+--          print(string.format("-- PRE\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
 
 
          if newnote.playerpos == nil or next(newnote.playerpos) == nil then
@@ -224,12 +206,13 @@ function __map_notes(basedb)
                         category    =  newnote.category,
                         playerpos   =  playerpos,
                         timestamp   =  newnote.timestamp or os.time(),
+                        customtbl   =  customtbl,
                      }
 
                table.insert(self.notes[playerpos.zonename], t)
 
-               print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
-                                    t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
+--                print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
+--                                     t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
 
             end
 
