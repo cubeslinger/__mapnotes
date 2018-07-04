@@ -22,7 +22,7 @@
 --          timestamp   =  newnote.timestamp or os.time(),
 --       }
 --
-local addon, mano = ...
+-- local addon, mano = ...
 --
 function __map_notes(basedb, customtbl)
 
@@ -85,8 +85,8 @@ function __map_notes(basedb, customtbl)
       for _, tbl in pairs(self.notes) do
          for _, b in pairs(tbl) do
             if b.idx ~= nil then
-               print(string.format("__map_notes.loaddb: zone=%s: (%s)", b.playerpos.zonename, b.label))
-               print(string.format("__map_notes.loaddb: lastidx=%s, tbl.idx=%s", self.lastidx, b.idx))
+--                print(string.format("__map_notes.loaddb: zone=%s: (%s)", b.playerpos.zonename, b.label))
+--                print(string.format("__map_notes.loaddb: lastidx=%s, tbl.idx=%s", self.lastidx, b.idx))
 
 --                print("__map_notes.loaddb: dump(b):", mano.f.dumptable(b))
 
@@ -172,6 +172,41 @@ function __map_notes(basedb, customtbl)
 
       return   t
    end
+   
+   function self.getnotebyzoneandidx(zone, idx)
+      
+      local t  =  {}
+--       if zone ~= nil and idx ~= nil and  self.notes[zonename] ~= nil and  next(self.notes[zonename]) then
+   
+      if zone ~= nil and idx ~= nil then
+         
+         local tbl   =  {}
+         
+         for _, tbl in pairs(self.notes[zone]) do            
+            if tbl.idx  == idx   then  t  =  tbl   end            
+         end      
+      end
+      
+      return(t)
+   end
+   
+   function self.modify(zonename, idx, newdata)
+      
+      print("MODIFY: landing...")
+      
+      local t  =  {}
+      
+      if zonename ~= nil and idx ~= nil then
+         if self.notes[zonename] ~= nil and next(self.notes[zonename]) ~= nil then
+            for a, b in pairs(self.notes) do
+               print(string.format("MODIFY: a=%s b=%s", a,b))
+            end
+         end
+      end
+      
+      return t
+   end
+   
 
    -- newnote = { label, text, category, playerpos={}, idx, timestamp }
    function self.new(newnote, customtbl)
@@ -179,8 +214,6 @@ function __map_notes(basedb, customtbl)
       local t  =  {}
 
       if newnote ~= nil or next(newnote) ~= nil then
---          print(string.format("-- PRE\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s", newnote.label, newnote.text, newnote.category, newnote.playerpos, newnote.idx, newnote.timestamp))
-
 
          if newnote.playerpos == nil or next(newnote.playerpos) == nil then
             playerpos   =  getplayerposition()
