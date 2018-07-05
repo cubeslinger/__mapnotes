@@ -1,7 +1,7 @@
 Identifier  =  "__mapnotes"
 Name        =  { English = "__mapnotes" }
 NameShort   =  "MaNo"
-Version     =  "0.8"
+Version     =  "0.9"
 Description =  { English = "__mapnotes" }
 Author      =  "marcob@marcob.org"
 Website     =  "https://github.com/cubeslinger/__mapnotes"

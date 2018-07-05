@@ -190,23 +190,54 @@ function __map_notes(basedb, customtbl)
       return(t)
    end
    
-   function self.modify(zonename, idx, newdata)
+   function self.modify(zone2modify, idx, newdata)
       
-      print("MODIFY: landing...")
+      print(string.format("NOTE MODIFY: landing...: zone2modify=%s idx=%s newdata=%s", zone2modify, idx, newdata))
       
       local t  =  {}
       
-      if zonename ~= nil and idx ~= nil then
-         if self.notes[zonename] ~= nil and next(self.notes[zonename]) ~= nil then
-            for a, b in pairs(self.notes) do
-               print(string.format("MODIFY: a=%s b=%s", a,b))
+      if zone2modify ~= nil and idx ~= nil then
+         
+         if self.notes[zone2modify] ~= nil and next(self.notes[zone2modify]) ~= nil then
+            
+            local note        =  {}
+            
+            for _, note in pairs(self.notes[zone2modify]) do
+               
+               print(string.format("MODIFY: zonename=%s note.idx=%s", zone2modify, note.idx))
+               
+               
+               print(string.format("if %s == %s", note.idx, idx))
+               if note.idx == idx then
+                  
+                  -- modify, delete if newdata is empty
+                  if newdata ~= nil and next(newdata)  then  
+                     table.insert(t, newdata) 
+                  else
+                     print("DELETING")
+                  end   
+
+               else
+                  table.insert(t, note)
+               end
             end
+            
+            if next(t) ~= nil then self.notes[zone2modify] = t end
+            
          end
       end
       
-      return t
+      return newdata
    end
    
+   function self.delete(zone2modify, idx)
+      
+      print("NOTE DELETE: landing...")            
+      
+      local t  =  self.modify(zone2modify, idx, nil)
+   
+      return t
+   end
 
    -- newnote = { label, text, category, playerpos={}, idx, timestamp }
    function self.new(newnote, customtbl)
