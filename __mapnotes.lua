@@ -183,14 +183,15 @@ function __map_notes(basedb, customtbl)
          local tbl   =  {}
 
          for _, tbl in pairs(self.notes[zone]) do
---             local T  =  tbl[1]
---             print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(T))
---             if T.idx  == idx   then  t  =  tbl   end
-            if tbl.idx  == idx   then  t  =  tbl   end
+            print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(tbl))
+            if tbl.idx  == idx   then  
+               t  =  tbl   
+               print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(t))
+            end
          end
       end
 
-      return(t)
+      return t
    end
 
    function self.modify(zone2modify, idx, newdata)
