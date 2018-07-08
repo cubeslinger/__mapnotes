@@ -9,7 +9,7 @@
 --          label       =  newnote.label,
 --          text        =  newnote.text,
 --          category    =  newnote.category,
---          playerpos   =  playerpos,
+--          playerpos   =  {,
 --                         y              =  tbl.y or nil,
 --                         x              =  tbl.x,
 --                         z              =  tbl.z,
