@@ -100,16 +100,17 @@ function __map_notes(basedb, customtbl)
    end
 
 
-   local function getplayerposition()
+--    local function getplayerposition()
+   function self.getplayerposition()
 
       local t  =  {}
       local bool, playerdata = pcall(Inspect.Unit.Detail, "player")
 
 
       if bool  then
-         t.x              = playerdata.coordX
-         t.y              = playerdata.coordY
-         t.z              = playerdata.coordZ
+         t.x              = mano.f.rounddecimal(playerdata.coordX, 2)
+         t.y              = mano.f.rounddecimal(playerdata.coordY, 2)
+         t.z              = mano.f.rounddecimal(playerdata.coordZ, 2)
 --          t.zone           = playerdata.zone
          t.locationName   = playerdata.locationName
          t.radius         = playerdata.radius
@@ -184,8 +185,8 @@ function __map_notes(basedb, customtbl)
 
          for _, tbl in pairs(self.notes[zone]) do
             print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(tbl))
-            if tbl.idx  == idx   then  
-               t  =  tbl   
+            if tbl.idx  == idx   then
+               t  =  tbl
                print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(t))
             end
          end
@@ -263,7 +264,7 @@ function __map_notes(basedb, customtbl)
       if newnote ~= nil or next(newnote) ~= nil then
 
          if newnote.playerpos == nil or next(newnote.playerpos) == nil then
-            playerpos   =  getplayerposition()
+            playerpos   =  self.getplayerposition()
          else
             playerpos   =  newnote.playerpos
          end
