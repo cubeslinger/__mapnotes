@@ -22,7 +22,7 @@
 --          timestamp   =  newnote.timestamp or os.time(),
 --       }
 --
-local addon, mano = ...
+-- local addon, mano = ...
 --
 function __map_notes(basedb, customtbl)
 
@@ -35,6 +35,18 @@ function __map_notes(basedb, customtbl)
                   db             =  {},
                   initialized    =  false,
                   }
+
+
+   local function rounddecimal(val, decimal)
+
+      if (decimal) then
+         return math.floor( (val * 10^decimal) + 0.5) / (10^decimal)
+      else
+         return math.floor(val+0.5)
+      end
+
+   end
+
 
    local function tablemerge(a, b)
       if type(a) == 'table' and type(b) == 'table' then
@@ -108,9 +120,9 @@ function __map_notes(basedb, customtbl)
 
 
       if bool  then
-         t.x              = mano.f.rounddecimal(playerdata.coordX, 2)
-         t.y              = mano.f.rounddecimal(playerdata.coordY, 2)
-         t.z              = mano.f.rounddecimal(playerdata.coordZ, 2)
+         t.x              = rounddecimal(playerdata.coordX, 2)
+         t.y              = rounddecimal(playerdata.coordY, 2)
+         t.z              = rounddecimal(playerdata.coordZ, 2)
 --          t.zone           = playerdata.zone
          t.locationName   = playerdata.locationName
          t.radius         = playerdata.radius
