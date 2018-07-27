@@ -304,8 +304,8 @@ function __map_notes(basedb, customtbl)
 
                table.insert(self.notes[playerpos.zonename], t)
 
---                print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
---                                     t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
+               print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
+                                    t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
 
             end
 
