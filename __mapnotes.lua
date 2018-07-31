@@ -97,11 +97,6 @@ function __map_notes(basedb, customtbl)
       for _, tbl in pairs(self.notes) do
          for _, b in pairs(tbl) do
             if b.idx ~= nil then
---                print(string.format("__map_notes.loaddb: zone=%s: (%s)", b.playerpos.zonename, b.label))
---                print(string.format("__map_notes.loaddb: lastidx=%s, tbl.idx=%s", self.lastidx, b.idx))
-
---                print("__map_notes.loaddb: dump(b):", mano.f.dumptable(b))
-
                self.lastidx         =  math.max(self.lastidx, b.idx)
                self.lastnegativeidx =  math.min(self.lastnegativeidx, b.idx)
             end
@@ -123,12 +118,9 @@ function __map_notes(basedb, customtbl)
          t.x              = rounddecimal(playerdata.coordX, 2)
          t.y              = rounddecimal(playerdata.coordY, 2)
          t.z              = rounddecimal(playerdata.coordZ, 2)
---          t.zone           = playerdata.zone
          t.locationName   = playerdata.locationName
          t.radius         = playerdata.radius
          t.name           = playerdata.name
-
---          local bool, zonedata = pcall(Inspect.Zone.Detail, t.zone)
 
          local bool, zonedata = pcall(Inspect.Zone.Detail, playerdata.zone)
 
@@ -169,14 +161,12 @@ function __map_notes(basedb, customtbl)
          print("self.getzonedata:zonename: zonename is nil!")
       end
 
---       print("getzonedata:\n", mano.f.dumptable(t))
-
       return t
    end
 
    function self.getzonedatabyid(zoneid)
---       print(string.format("self.getzonedatabyid(%s)", zoneid))
-      local t   =  {}
+
+		local t   =  {}
 
       if zoneid ~= nil then
          local zone  =  Inspect.Zone.Detail(zoneid)
@@ -189,17 +179,15 @@ function __map_notes(basedb, customtbl)
    function self.getnotebyzoneandidx(zone, idx)
 
       local t  =  {}
---       if zone ~= nil and idx ~= nil and  self.notes[zonename] ~= nil and  next(self.notes[zonename]) then
 
       if zone ~= nil and idx ~= nil then
 
          local tbl   =  {}
 
          for _, tbl in pairs(self.notes[zone]) do
---             print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(tbl))
+
             if tbl.idx  == idx   then
                t  =  tbl
---                print("getnotebyzoneandidx tbl:\n", mano.f.dumptable(t))
             end
          end
       end
@@ -207,62 +195,8 @@ function __map_notes(basedb, customtbl)
       return t
    end
 
---    function self.modify(zone2modify, idx, newdata)
---
--- --       print(string.format("NOTE MODIFY: landing...: zone2modify=%s idx=%s newdata=%s", zone2modify, idx, newdata))
---
---       local TBL  =  {}
---
---       if zone2modify ~= nil and idx ~= nil then
---
---          if self.notes[zone2modify] ~= nil and next(self.notes[zone2modify]) ~= nil then
---
---             local note        =  {}
---
---             for _, note in pairs(self.notes[zone2modify]) do
---
--- --                print(string.format("MODIFY: zonename=%s note.idx=%s", zone2modify, note.idx))
---
---
--- --                print(string.format("if %s == %s", note.idx, idx))
---
---                -- MODIFY/DELETE
---                if note.idx == idx then
---
---                   -- modify, delete if newdata is empty
---                   if newdata ~= nil and next(newdata) ~= nil then
--- --                      table.insert(TBL, { newdata })
---                      table.insert(TBL, newdata)
--- --                      print("IT IS our IDX, adding to TBL modifyed")
---                   else
--- --                      print("DELETING")
---                   end
---
---                else
--- --                   print("not our IDX, adding to tTBL")
--- --                   table.insert(TBL, { note })
---                   table.insert(TBL, note)
---                end
---
---             end
---
--- --             print("new TBL:\n", mano.f.dumptable(TBL))
---
---             if next(TBL) ~= nil then
--- --                print("NEW DATA for zone " ..zone2modify.." INJECTED")
---                self.notes[zone2modify] = TBL
---             end
---
---          end
---       end
---
---       return newdata
---    end
-
 
    function self.modify(zone2modify, idx, newdata)
-
---       print(string.format("NOTE MODIFY: landing...: zone2modify=%s idx=%s newdata=%s", zone2modify, idx, newdata))
 
       local TBL  =  {}
 
@@ -293,8 +227,6 @@ function __map_notes(basedb, customtbl)
 
    function self.delete(zone2modify, idx)
 
---       print(string.format("NOTE DELETE: landing...: zone2modify=%s idx=%s", zone2modify, idx))
-
       local TBL  =  {}
 
       if zone2modify ~= nil and idx ~= nil then
@@ -304,9 +236,6 @@ function __map_notes(basedb, customtbl)
             local note        =  {}
 
             for _, note in pairs(self.notes[zone2modify]) do
-
---                print(string.format("MODIFY: zonename=%s note.idx=%s", zone2modify, note.idx))
---                print(string.format("if %s == %s", note.idx, idx))
 
                -- MODIFY
                if note.idx ~= idx then
@@ -324,15 +253,6 @@ function __map_notes(basedb, customtbl)
       return newdata
    end
 
-
---    function self.delete(zone2modify, idx)
---
--- --       print("NOTE DELETE: landing...")
---
---       local t  =  self.delete(zone2modify, idx)
---
---       return t
---    end
 
    -- newnote = { label, text, category, playerpos={}, idx, timestamp }
    function self.new(newnote, customtbl)
@@ -382,7 +302,6 @@ function __map_notes(basedb, customtbl)
          print("__map_notes.new(newnote) ERROR: newnote is empty or nil")
       end
 
---       return self.lastidx
       return t
    end
 
