@@ -22,7 +22,7 @@
 --          timestamp   =  newnote.timestamp or os.time(),
 --       }
 --
--- local addon, mano = ...
+local addon, mano = ...
 --
 function __map_notes(basedb, customtbl)
 
@@ -198,6 +198,10 @@ function __map_notes(basedb, customtbl)
 
    function self.modify(zone2modify, idx, newdata)
 
+
+-- 		print(string.format("__mapnotes.modify(%s, %s, newdata)", zone2modify, idx))
+-- 		mano.f.dumptable(newdata)
+
       local TBL  =  {}
 
       if zone2modify ~= nil and idx ~= nil then
@@ -290,8 +294,8 @@ function __map_notes(basedb, customtbl)
 
                table.insert(self.notes[playerpos.zonename], t)
 
-               print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
-                                    t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
+--                print(string.format("-- POST\n label=%s\n text=%s\n category=%s\n playerpos=%s\n idx=%s\n timestamp=%s\n zone=%s",
+--                                     t.label, t.text, t.category, t.playerpos, t.idx, t.timestamp, t.playerpos.zonename))
 
             end
 
