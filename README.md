@@ -1,7 +1,7 @@
-RIFT - __mapnotes()
+RIFT - LibMapNotes()
 
-__mapnotes() - module
+LibMApNotes() - module
 
 snailtail@typhiria
 
-06/05/2018
+26/06/2019

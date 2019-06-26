@@ -1,7 +1,7 @@
 --
--- Addon       __map_notes.lua
+-- Addon       LibMapNotes.lua
 -- Author      marcob@marcob.org
--- StartDate   06/05/2018
+-- StartDate   26/06/2019
 --
 -- manonotesdb = {
 --
@@ -22,9 +22,10 @@
 --          timestamp   =  newnote.timestamp or os.time(),
 --       }
 --
-local addon, mano = ...
+-- local addon, mano = ...
 --
-function __map_notes(basedb, customtbl)
+
+function Library.LibMapNotes.note(basedb, customtbl)
 
    local self =   {
                   notes          =  {},
@@ -313,6 +314,9 @@ function __map_notes(basedb, customtbl)
       loaddb(basedb or nil)
 --       self.db.puzzles   =  __puzzles()
 --       self.db.cairns    =  __cairns()
+--       self.db.puzzles   =  Library.LibMapNotes.db.puzzles()
+--       self.db.cairns    =  Library.LibMapNotes.db.cairns()
+
       self.initialized  =  true
    end
 

@@ -1,15 +1,16 @@
-Identifier  =  "__mapnotes"
-Name        =  { English = "__mapnotes" }
-NameShort   =  "__mapnotes"
-Version     =  "0.20"
-Description =  { English = "__mapnotes" }
+Identifier  =  "LibMapNotes"
+Name        =  { English = "LibMapNotes" }
+NameShort   =  "LibMapNotes"
+Version     =  "0.30"
+Description =  { English = "LibMapNotes" }
 Author      =  "marcob@marcob.org"
-Website     =  "https://github.com/cubeslinger/__mapnotes"
+Website     =  "https://github.com/cubeslinger/LibMapNotes"
 Email       =  "marcob@marcob.org"
 Environment =  "4.0"
 
 RunOnStartup = {
-  "db/__puzzles.lua",
-  "db/__cairns.lua",
-  "__mapnotes.lua",
+  "LibMapNotes_init.lua"
+--  "db/puzzles.lua",
+--  "db/cairns.lua",
+  "LibMapNotes.lua",
 }
